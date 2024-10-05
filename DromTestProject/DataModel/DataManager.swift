@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class DataManager {
   static let shared = DataManager()
@@ -18,4 +19,40 @@ class DataManager {
     "https://burst.shopifycdn.com/photos/bus-at-a-light-with-a-person-in-their-phone.jpg?width=925&exif=0&iptc=0",
     "https://burst.shopifycdn.com/photos/person-holds-a-book-over-a-stack-and-turns-the-page.jpg?width=925&exif=0&iptc=0"
   ]
+  
+  var imageCache = [String: UIImage]()
+  
+  // MARK: - Save image to file system
+  func saveImageToCache(url: String, image: UIImage) {
+    guard let data = image.pngData() else { return }
+    let filename = getDocumentsDirectory().appendingPathComponent(URL(string: url)!.lastPathComponent)
+    
+    do {
+      try data.write(to: filename)
+      imageCache[url] = image
+    } catch {
+      print("Failed to save image: \(error)")
+    }
+  }
+  
+  // MARK: - Load image from file system
+  func loadImageFromCache(url: String) -> UIImage? {
+    if let cachedImage = imageCache[url] {
+      return cachedImage
+    }
+    
+    let filename = getDocumentsDirectory().appendingPathComponent(URL(string: url)!.lastPathComponent)
+    
+    if let image = UIImage(contentsOfFile: filename.path) {
+      imageCache[url] = image
+      return image
+    }
+    
+    return nil
+  }
+  
+  // MARK: - Get documents directory
+  private func getDocumentsDirectory() -> URL {
+    return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+  }
 }

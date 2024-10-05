@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  CollectionViewCell.swift
 //  DromTestProject
 //
 //  Created by anikin02 on 05.10.2024.
@@ -12,8 +12,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
   private var collectionView: UICollectionView!
   private var refreshControl = UIRefreshControl()
   private var imageURLs: [String] = []
-  
-  private var imageCache = [String: UIImage]()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -49,13 +47,13 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     let imageURL = imageURLs[indexPath.item]
     
-    if let cachedImage = imageCache[imageURL] {
+    if let cachedImage = DataManager.shared.loadImageFromCache(url: imageURL) {
       cell.imageView.image = cachedImage
     } else {
       APIManager.shared.loadImage(from: imageURL) { image in
         DispatchQueue.main.async {
           if let image = image {
-            self.imageCache[imageURL] = image
+            DataManager.shared.saveImageToCache(url: imageURL, image: image)
             cell.imageView.image = image
           }
         }
