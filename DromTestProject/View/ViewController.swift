@@ -2,26 +2,22 @@ import UIKit
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   
-  var collectionView: UICollectionView!
-  var refreshControl = UIRefreshControl()
-  var imageURLs: [String] = [
-    "https://burst.shopifycdn.com/photos/photo-of-a-cityscape-with-a-ferris-wheel.jpg?width=4460&height=4460&exif=0&iptc=0",
-    "https://burst.shopifycdn.com/photos/landscape-of-green-rolling-hills-and-mountain-peaks.jpg?width=4460&height=4460&exif=0&iptc=0",
-    "https://burst.shopifycdn.com/photos/two-people-in-a-car-look-at-a-map-while-smiling.jpg?width=4460&height=4460&exif=0&iptc=0",
-    "https://burst.shopifycdn.com/photos/two-customized-cars-rolling-through-a-city-street.jpg?width=925&exif=0&iptc=0",
-    "https://burst.shopifycdn.com/photos/bus-at-a-light-with-a-person-in-their-phone.jpg?width=925&exif=0&iptc=0",
-    "https://burst.shopifycdn.com/photos/person-holds-a-book-over-a-stack-and-turns-the-page.jpg?width=925&exif=0&iptc=0"
-  ]
+  private var collectionView: UICollectionView!
+  private var refreshControl = UIRefreshControl()
+  private var imageURLs: [String] = []
   
-  var imageCache = [String: UIImage]()
+  private var imageCache = [String: UIImage]()
   
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = UIColor.white
+    
+    imageURLs = DataManager.shared.imageURLs
+    
     generateCollectionView()
   }
   
-  func generateCollectionView() {
+  private func generateCollectionView() {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .vertical
     
@@ -31,7 +27,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "cell")
     
-    // Настройка UIRefreshControl
     refreshControl.addTarget(self, action: #selector(refreshCollectionView), for: .valueChanged)
     collectionView.refreshControl = refreshControl
     
@@ -85,14 +80,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
   }
   
   @objc func refreshCollectionView() {
-    imageURLs = [
-      "https://burst.shopifycdn.com/photos/photo-of-a-cityscape-with-a-ferris-wheel.jpg?width=4460&height=4460&exif=0&iptc=0",
-      "https://burst.shopifycdn.com/photos/landscape-of-green-rolling-hills-and-mountain-peaks.jpg?width=4460&height=4460&exif=0&iptc=0",
-      "https://burst.shopifycdn.com/photos/two-people-in-a-car-look-at-a-map-while-smiling.jpg?width=4460&height=4460&exif=0&iptc=0",
-      "https://burst.shopifycdn.com/photos/two-customized-cars-rolling-through-a-city-street.jpg?width=925&exif=0&iptc=0",
-      "https://burst.shopifycdn.com/photos/bus-at-a-light-with-a-person-in-their-phone.jpg?width=925&exif=0&iptc=0",
-      "https://burst.shopifycdn.com/photos/person-holds-a-book-over-a-stack-and-turns-the-page.jpg?width=925&exif=0&iptc=0"
-    ]
+    imageURLs = DataManager.shared.imageURLs
     
     collectionView.reloadData()
     refreshControl.endRefreshing()
