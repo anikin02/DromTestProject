@@ -1,10 +1,9 @@
 # DromTestProject
 
-## Description
 This project is a test task for Drom.
 
 ## Demo
-<img src="Demo.gif" width="400">
+<img src="Demo.gif" height="500" width="240">
 
 ## Technologies
 Xcode
