@@ -1,3 +1,10 @@
+//
+//  ViewController.swift
+//  DromTestProject
+//
+//  Created by anikin02 on 05.10.2024.
+//
+
 import UIKit
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
