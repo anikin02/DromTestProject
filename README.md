@@ -12,7 +12,7 @@ Swift
 
 UIKit
 
-iOs 14+
+iOS 14+
 
 ## Installation
 
